@@ -1,0 +1,169 @@
+fieldset table {
+	margin-top: -2px;
+}
+/*
+fieldset.table legend {
+	margin: 0 0 -10px 19px;
+}
+*/
+ul.actions fieldset.apply {
+	background-color: #83b340;
+	background-image: -webkit-linear-gradient(top, #92c44d 0%, #92c44d 30%, #78a737 100%);
+	background-image:	 -moz-linear-gradient(top, #92c44d 0%, #92c44d 30%, #78a737 100%);
+	background-image:	  -ms-linear-gradient(top, #92c44d 0%, #92c44d 30%, #78a737 100%);
+	background-image:	   -o-linear-gradient(top, #92c44d 0%, #92c44d 30%, #78a737 100%);
+	background-image:	linear-gradient(to bottom, #92c44d 0%, #92c44d 30%, #78a737 100%);
+	border-color: rgba(50, 70, 23, 0.3);
+	border-bottom-color: rgba(50, 70, 23, 0.5);
+	color: rgba(255, 255, 255, 0.9);
+	text-shadow: 1px 1px 1px rgba(50, 70, 23, 0.25);
+}
+
+ul.actions li fieldset.apply select {
+	color: rgba(255, 255, 255, 0.9);
+	text-shadow: 1px 1px 1px rgba(50, 70, 23, 0.25);
+}
+
+ul.actions li fieldset.apply button {
+	background: none;
+	color: rgba(255, 255, 255, 0.9);
+	text-shadow: 1px 1px 1px rgba(50, 70, 23, 0.25);
+}
+
+ul.actions li fieldset.apply option {
+	background-color: white;
+	color: black;
+}
+
+ul.actions form button[type='submit'] {
+	display: inline-block;
+	height: 22px;
+}
+
+ul.actions li input[type='file'] {
+	margin: 0 0 0 10px;
+	height: 22px;
+}
+
+div.new-directories, div.upload-queue-buttons {
+	position: relative;
+	margin: 8px 0 3px 0;
+	padding-left: 19px;
+}
+
+button[name="add_files.upload_queue"] {
+	z-index: 3;
+}
+
+textarea[name='directory_names'] {
+	display: block;
+	margin: -14px 0 6px;
+	width: 300px;
+	min-height: 20px;
+	resize: vertical;
+}
+
+input[name='add-files-true-button'] {
+	position: absolute;
+	z-index: 0;
+	top: 0;
+	opacity: 0;
+	width: 28px;
+	height: 20px;
+	font-size: 1000px;
+	cursor: pointer;
+}
+
+form.form-insert {
+	padding: 8px;
+}
+
+.hidden {
+	display: none;
+}
+
+/*--------------------------------------------------------------------------
+	Settings
+--------------------------------------------------------------------------*/
+
+fieldset.tbl {
+	position: relative;
+	padding: 10px 0 10px 120px;
+	margin: 0 18px 10px;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+fieldset.tbl > legend {
+	position: absolute;
+	text-indent: -120px;
+	line-height: 1.5;
+}
+
+fieldset.tbl select {
+	width: 100%;
+}
+
+fieldset.tbl .side {
+	margin: -0.5em 0 1.5em;
+}
+
+fieldset.tbl:first-of-type {
+	margin-top: 5px;
+	border-top: none;
+}
+
+fieldset.tbl > legend + .side {
+	position: absolute;
+	margin: 1.75em 0 0 -120px;
+	width: 11em;
+}
+
+fieldset.tbl > legend + .side p {
+	margin: 0 0 1.5em;
+}
+
+fieldset.tbl > *:first-child {
+	margin-top: 0;
+}
+
+fieldset.tbl fieldset {
+	margin-top: 0.5em;
+	padding-bottom: 0;
+	border-top: 1px solid #ddc;
+}
+
+fieldset.tbl fieldset legend {
+	display: inline;
+	margin: 0;
+	padding: 0;
+	font-weight: normal;
+	line-height: 1.5;
+	text-indent: 0;
+	background: #fff;
+	color: #665;
+}
+
+@media screen and (max-width: 700px) {
+
+	fieldset.tbl {
+		padding-left: 0;
+	}
+
+	fieldset.tbl:first-of-type {
+		margin: 15px 18px 10px;
+		border-top: 1px solid rgba(0, 0, 0, 0.1);
+	}
+
+	fieldset.tbl > legend {
+		position: relative;
+		text-indent: 0;
+		padding: 0 10px 0 0;
+	}
+
+	fieldset.tbl > legend + .side {
+		position: relative;
+		margin: 0 0 15px;
+		width: auto;
+	}
+
+}
