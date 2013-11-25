@@ -10,7 +10,7 @@ After downloading and extracting the folder, rename the folder to "workspace_man
 
 ##Usage
 
-Your gateway is the new navigation heading ‘Workspace’.
+Your gateway is the new navigation tab ‘Workspace’.
 
 ##Browser Compatibility.
 

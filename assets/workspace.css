@@ -1,3 +1,41 @@
+#upload-queue {
+	display: none;
+}
+
+fieldset {
+	background-color: white !important;
+}
+
+div.section-header {
+	clear: both;
+	position: relative;
+	margin-bottom: 5px;
+	background-color: rgba(0, 0, 0, 0.15);
+	/*padding: 0 0 5em;
+	border-top: 1px solid rgba(191, 191, 183, 0.65);*/
+	/*border: 1px solid rgba(0, 0, 0, 0.20);
+	/*-webkit-box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.05);
+	box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.05);
+	/*min-height: 100%;*/
+}
+
+div.section-header h3 {
+	padding: 9px 19px 8px;
+	color: rgba(0, 0, 0, 0.65);
+}
+/*
+div.section-header h3:after {
+	content: "";
+	display: block;
+	clear: both;
+	height: 0;
+}
+*/
+div.section-header ul {
+	float: right;
+	margin-top: -28px;
+}
+
 fieldset table {
 	margin-top: -2px;
 }
@@ -62,14 +100,21 @@ textarea[name='directory_names'] {
 	min-height: 20px;
 	resize: vertical;
 }
-
+/*
 input[name='add-files-true-button'] {
+*/
+div#aftb {
 	position: absolute;
 	z-index: 0;
-	top: 0;
+	top: -2px;
+	left: 18px;
 	opacity: 0;
-	width: 28px;
-	height: 20px;
+	cursor: pointer;
+	overflow: hidden;
+}
+
+div#aftb input {
+	border: 0;
 	font-size: 1000px;
 	cursor: pointer;
 }
@@ -82,88 +127,6 @@ form.form-insert {
 	display: none;
 }
 
-/*--------------------------------------------------------------------------
-	Settings
---------------------------------------------------------------------------*/
-
-fieldset.tbl {
+.relative {
 	position: relative;
-	padding: 10px 0 10px 120px;
-	margin: 0 18px 10px;
-	border-top: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-fieldset.tbl > legend {
-	position: absolute;
-	text-indent: -120px;
-	line-height: 1.5;
-}
-
-fieldset.tbl select {
-	width: 100%;
-}
-
-fieldset.tbl .side {
-	margin: -0.5em 0 1.5em;
-}
-
-fieldset.tbl:first-of-type {
-	margin-top: 5px;
-	border-top: none;
-}
-
-fieldset.tbl > legend + .side {
-	position: absolute;
-	margin: 1.75em 0 0 -120px;
-	width: 11em;
-}
-
-fieldset.tbl > legend + .side p {
-	margin: 0 0 1.5em;
-}
-
-fieldset.tbl > *:first-child {
-	margin-top: 0;
-}
-
-fieldset.tbl fieldset {
-	margin-top: 0.5em;
-	padding-bottom: 0;
-	border-top: 1px solid #ddc;
-}
-
-fieldset.tbl fieldset legend {
-	display: inline;
-	margin: 0;
-	padding: 0;
-	font-weight: normal;
-	line-height: 1.5;
-	text-indent: 0;
-	background: #fff;
-	color: #665;
-}
-
-@media screen and (max-width: 700px) {
-
-	fieldset.tbl {
-		padding-left: 0;
-	}
-
-	fieldset.tbl:first-of-type {
-		margin: 15px 18px 10px;
-		border-top: 1px solid rgba(0, 0, 0, 0.1);
-	}
-
-	fieldset.tbl > legend {
-		position: relative;
-		text-indent: 0;
-		padding: 0 10px 0 0;
-	}
-
-	fieldset.tbl > legend + .side {
-		position: relative;
-		margin: 0 0 15px;
-		width: auto;
-	}
-
 }

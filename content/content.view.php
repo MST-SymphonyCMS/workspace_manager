@@ -1,6 +1,7 @@
 <?php
 
 	require_once TOOLKIT . '/class.administrationpage.php';
+	require_once EXTENSIONS . '/workspace_manager/lib/widget_extra.php';
 
 	class contentExtensionWorkspace_managerView extends AdministrationPage{
 		public $assets_base_url;
@@ -83,19 +84,86 @@
 			$top_actions = Widget::Form('#', 'get');
 			$top_actions->setAttribute('id', 'top-actions');
 			$top_actions->appendChild($apply);*/
-			$this->appendSubheading(__($subheading)); //, $top_actions);
+			$top_actions = new XMLElement('button', __('Show Upload Queue'), array('type' => 'button', 'name' => 'show.upload_queue'));
+			$this->appendSubheading(__($subheading), $top_actions);
 			if($breadcrumbs) $this->insertBreadcrumbs($breadcrumbs);
+			
+			/*
+			 * Button to show/hide upload queue.
+			 */
+			//$this->Form->appendChild(new XMLElement('button', __('Show Upload Queue'), array('type' => 'button', 'name' => 'show.upload_queue')));
+
+			/*
+			 * File uploads fieldset.
+			 */
+			$fieldset = new XMLElement('fieldset', NULL, array('id' => 'upload-queue', 'class' => 'table'));
+			$div = WidgetExtra::SectionHead(__('Upload Queue'));
+			$fieldset->appendChild($div);
+			/*$button = new XMLElement('button', __('Create New Directory'), array('type' => 'button', 'name' => 'create_new.directories'));
+			$div->appendChild(WidgetExtra::UList(array($button)));
+			$fieldset->appendChild($div);			
+/*			$fieldset->appendChild(new XMLElement('legend',__('Upload Queue')));
+			$side = new XMLElement('div', NULL, array('class' => 'side'));
+			$side->appendChild(
+				new XMLElement('button', __('Add Files'), array('type' => 'button', 'name' => 'add_files.upload_queue'))
+			);
+			$shim = new XMLElement('div');
+			$shim->appendChild(
+				Widget::Input('add-files-true-button', '', 'file', array('multiple' => 'multiple'))
+			);
+			$side->appendChild($shim);
+			$fieldset->appendChild($side);
+*/			
+			//$div = new XMLElement('div', NULL, array('id' => 'upload-queue', 'class' => 'hidden'));
+			$fieldset->appendChild(
+				Widget::Table(
+					Widget::TableHead(
+						array(
+							array(__('Name'), 'col'),
+							array(__('Size (Bytes)'), 'col'),
+							array(__('Status'), 'col')
+						)
+					),
+					NULL,
+					new XMLElement(
+						'tbody',
+						NULL,
+						array('data-tmpl' => 'tmpl-upload-queue', 'data-data' => 'uploads')
+					),
+					'selectable'
+				)
+			);
+			$buttons = new XMLElement('div', NULL, array('class' => 'upload-queue-buttons'));
+			//$add_files_div = new XMLElement('div', NULL, array('class' => 'relative'));
+			$buttons->appendChild(
+				new XMLElement('button', __('Add Files'), array('type' => 'button', 'name' => 'add_files.upload_queue'))
+			);
+			$shim = new XMLElement('div', NULL, array('id' => 'aftb'));
+			$shim->appendChild(
+				Widget::Input('add-files-true-button', '', 'file', array('multiple' => 'multiple'))
+			);
+			$buttons->appendChild($shim);
+
+			$buttons->appendChild(
+				new XMLElement('button', __('Upload'), array('type' => 'button', 'name' => 'upload.upload_queue', 'disabled' => 'disabled'))
+			);
+			$buttons->appendChild(
+				new XMLElement('button', __('Cancel'), array('type' => 'button', 'name' => 'cancel.upload_queue'))
+			);
+			//$div->appendChild($buttons);
+			$fieldset->appendChild($buttons);
+			$this->Form->appendChild($fieldset);
+			//$this->Contents->prependChild($fieldset);
 
 			/*
 			 * Directories fieldset.
 			 */
-			$fieldset = new XMLElement('fieldset', NULL, array('class' => 'tbl table'));
-			$fieldset->appendChild(new XMLElement('legend', __('Directories')));
-			$side = new XMLElement('div', NULL, array('class' => 'side'));
-			$side->appendChild(
-				new XMLElement('button', __('Create New'), array('type' => 'button', 'name' => 'create_new.directories'))
-			);
-			$fieldset->appendChild($side);
+			$fieldset = new XMLElement('fieldset', NULL, array('class' => 'table'));
+			$div = WidgetExtra::SectionHead(__('Directories'));
+			$button = new XMLElement('button', __('Create New'), array('type' => 'button', 'name' => 'create_new.directories'));
+			$div->appendChild(WidgetExtra::UList(array($button)));
+			$fieldset->appendChild($div);			
+			
 			$div = new XMLElement('div', NULL, array('class' => 'new-directories hidden'));
 			$div->appendChild(new XMLElement('label', __('Enter directory names on separate lines')));
 			$div->appendChild(
@@ -129,14 +197,13 @@
 			/*
 			 * Files fieldset.
 			 */
-			$fieldset = new XMLElement('fieldset');
-			$fieldset->setAttribute('class', 'table tbl');
-			$fieldset->appendChild(new XMLElement('legend',__('Files')));
-			$side = new XMLElement('p', NULL, array('class' => 'side'));
-			$side->appendChild(
-				new XMLElement('button', __('Create New'), array('type' => 'button', 'name' => 'create_new.files', 'data-url' => $page_url_f))
-			);
-			$fieldset->appendChild($side);
+			$fieldset = new XMLElement('fieldset', NULL, array('class' => 'table'));
+			///$fieldset->setAttribute('class', 'table');
+			$div = WidgetExtra::SectionHead(__('Files'));
+			$button = new XMLElement('button', __('Create New'), array('type' => 'button', 'name' => 'create_new.files', 'data-url' => $page_url_f));
+			$div->appendChild(WidgetExtra::UList(array($button)));
+			$fieldset->appendChild($div);
+			
 			$fieldset->appendChild(
 				Widget::Table(
 					Widget::TableHead(
@@ -156,57 +223,6 @@
 				)
 			);
 			$this->Form->appendChild($fieldset);
-
-			/*
-			 * File uploads fieldset.
-			 */
-			$fieldset = new XMLElement(
-				'fieldset',
-				NULL,
-				array('class' => 'table tbl')//, 'id' => 'upload-queue')
-			);
-			$fieldset->appendChild(new XMLElement('legend',__('Upload Queue')));
-			$side = new XMLElement('div', NULL, array('class' => 'side'));
-			$side->appendChild(
-				new XMLElement('button', __('Add Files'), array('type' => 'button', 'name' => 'add_files.upload_queue'))
-			);
-			$shim = new XMLElement('div');
-			$shim->appendChild(
-				Widget::Input('add-files-true-button', '', 'file', array('multiple' => 'multiple'))
-			);
-			$side->appendChild($shim);
-			$fieldset->appendChild($side);
-			
-			$div = new XMLElement('div', NULL, array('id' => 'upload-queue', 'class' => 'hidden'));
-			$div->appendChild(
-				Widget::Table(
-					Widget::TableHead(
-						array(
-							array(__('Name'), 'col'),
-							array(__('Size (Bytes)'), 'col'),
-							array(__('Transferred (Bytes)'), 'col')
-						)
-					),
-					NULL,
-					new XMLElement(
-						'tbody',
-						NULL,
-						array('data-tmpl' => 'tmpl-upload-queue', 'data-data' => 'uploads')
-					),
-					'selectable'
-				)
-			);
-			$buttons = new XMLElement('div', NULL, array('class' => 'upload-queue-buttons'));
-			$buttons->appendChild(
-				new XMLElement('button', __('Upload'), array('type' => 'button', 'name' => 'upload.upload_queue', 'disabled' => 'disabled'))
-			);
-			$buttons->appendChild(
-				new XMLElement('button', __('Cancel'), array('type' => 'button', 'name' => 'cancel.upload_queue'))
-			);
-			$div->appendChild($buttons);
-			$fieldset->appendChild($div);
-			$this->Form->appendChild($fieldset);
-			//$this->Contents->prependChild($fieldset);
 
 			$this->Form->appendChild(
 				new XMLElement(
@@ -244,7 +260,7 @@
 				)
 			);
 			ob_clean();
-			include EXTENSIONS . '/workspace_manager/content/tmpl.indexview.upload-queue.php';
+			include EXTENSIONS . '/workspace_manager/content/tmpl.indexview.uploads.php';
 			$this->Contents->appendChild(
 				new XMLElement(
 					'script',

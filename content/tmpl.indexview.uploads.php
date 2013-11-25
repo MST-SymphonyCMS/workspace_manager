@@ -1,9 +1,9 @@
 {%if uploads%}
 	{%each uploads%}
-	<tr data-filename="${file.name}">
-		<td>${file.name}<input type="checkbox" name="items[${name}]"/></td>
-		<td>${file.size}</td>
-		<td>0</td>
+	<tr>
+		<td>${name}<input type="checkbox" name="items[${name}]"/></td>
+		<td>${size}</td>
+		<td>${status}</td>
 	</tr>
 	{%/each%}
 	{%if uploads.length == 0%}

@@ -10,14 +10,14 @@
 	}
 	var	$add_files_true_button;
 
-	var Uploader = function(file){
-		this.file = file;
-	}
-
-	Uploader.prototype.run = function(){
+	File.prototype.request = null;
+	File.prototype.status = "Inactive";
+	File.prototype.transferred = 0;
+	File.prototype.start = function(){
 		var self = this;
+		self.status = 'Queued';
 		var fd = new FormData();
-		fd.append('uploaded_file', this.file);
+		fd.append('uploaded_file', this);
 		fd.append("ajax", "1");
 		this.request = $.ajax({
 			//'contentType': 'multipart/form-data',
@@ -26,36 +26,39 @@
 			'url': document.URL,
 			'data': fd,
 			'processData': false,
-			/*'xhr': function(){
+			'xhr': function(){
 				var xhr = $.ajaxSettings.xhr();
 				if(xhr.upload){
 					$(xhr.upload).on('progress', function(event){
-						console.log("Loaded: " + event.loaded + " Total: " + event.total);
+						self.transferred = event.loaded;
+						self.status = event.loaded + " bytes transferred";
+						$contents.trigger('apply-templates', upload_data);
 					});
 				}
 				return xhr;
-			},*/
+			},
 			'dataType': 'json',
 			'error': function(xhr, msg) {
 				alert(msg);
 			},
 			'success': function(data) {
 				$contents.trigger('apply-templates', data);
-				self.file = null
+				self.status = false;
 				for(var i in upload_data.uploads){
-					if(upload_data.uploads[i].file == null){
+					if(!upload_data.uploads[i].status){
 						upload_data.uploads.splice(i, 1);
 						break;
 					}
 				}
-				if(upload_data.uploads.length == 0) $('#upload-queue').hide();
-				else table_upload_queue.display(upload_data);
+				$contents.trigger('apply-templates', upload_data);
+				/*if(upload_data.uploads.length == 0) $('#upload-queue').hide();
+				else table_upload_queue.display(upload_data);*/
 			}
 		});
 	}
 
+	var upload_queue_visible = false;
 	var upload_data = {'uploads': []};
-	var upload_buttons = {};
 
 	$(document).ready(function() {
 		templated_areas = $('[data-tmpl|="tmpl"]');
@@ -85,18 +88,31 @@
 		});
 
 		$add_files_true_button = $('input[name="add-files-true-button"]:first');
-		$add_files_true_button.width(buttons.upload_queue.add_files.clientWidth + 2);
-		$add_files_true_button.height(buttons.upload_queue.add_files.clientHeight + 2);
-		$add_files_true_button.click(function(event) {
-			$('#upload-queue').show();
-			$contents.trigger('apply-templates', upload_data);
+
+		$('button[name="show.upload_queue"]').click(function(event){
+			if(!upload_queue_visible){
+				$('#upload-queue').slideDown(280);
+				upload_queue_visible = true;
+				$contents.trigger('apply-templates', upload_data);
+				$(event.target).text('Hide Upload Queue');
+				$add_files_true_button.parent()
+					.delay(20)
+					.width(buttons.upload_queue.add_files.clientWidth + 3)
+					.height(buttons.upload_queue.add_files.clientHeight + 3);
+			}
+			else {
+				$('#upload-queue').slideUp(280);
+				upload_queue_visible = false;
+				$(event.target).text('Show Upload Queue');
+			}
 		});
+
 		$add_files_true_button.change(function(event) {
 			$(buttons.upload_queue.upload).attr('disabled', null);
 			var files = event.target.files;
 			for(var i in files){
 				if(typeof(files[i]) == 'object'){
-					upload_data.uploads.push(new Uploader(files[i]));
+					upload_data.uploads.push(files[i]);
 				}
 			}
 			$contents.trigger('apply-templates', upload_data);
@@ -152,20 +168,22 @@
 				local_buttons = buttons.upload_queue;
 				switch(command) {
 					case 'upload':
-						$(target).attr('disabled', 'disabled');
+						//$(target).attr('disabled', 'disabled');
 						for(var i in upload_data.uploads){
-							upload_data.uploads[i].run();
+							//upload_data.uploads[i].run();
+							upload_data.uploads[i].start();
 						}
 						break;
 					case 'cancel':
-						$('#upload-queue').hide();
 						for(i in upload_data.uploads){
 							try{
 								upload_data.uploads[i].request.abort();
+								//upload_data.uploads[i].status = "Aborted";
 							}
 							catch(error){}
 						}
 						upload_data.uploads = [];
+						$contents.trigger('apply-templates', upload_data);
 						break;
 				}
 			}

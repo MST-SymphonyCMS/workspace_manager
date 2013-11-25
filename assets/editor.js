@@ -14,8 +14,7 @@
 	var new_file,
 		document_modified = false;
 
-	var highlighter,
-		style_prefix;
+	var highlighter
 
 	var $list_files,
 		$tmpl_files,
