@@ -10,7 +10,7 @@ After downloading and extracting the folder, rename the folder to "workspace_man
 
 ##Usage
 
-Your gateway is the new navigation tab ‘Workspace’.
+Mostly self evident. On the editor page, files can be saved using `Ctrl + s` when the browser's focus is on the editing area.
 
 ##Browser Compatibility.
 

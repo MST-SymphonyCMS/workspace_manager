@@ -1,7 +1,7 @@
 {%if uploads%}
 	{%each uploads%}
 	<tr>
-		<td>${name}<input type="checkbox" name="items[${name}]"/></td>
+		<td>${name}<input type="checkbox" name="${name}"/></td>
 		<td>${size}</td>
 		<td>${status}</td>
 	</tr>

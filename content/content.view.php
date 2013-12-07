@@ -68,53 +68,38 @@
 			else{
 				$subheading = 'Workspace';
 			}
-/*
-			$apply = Widget::Apply(
-				array(
-					array('new file', false, __('Create New File'), null, null,
-						array(
-							'data-url' => $page_url_f
-						)
-					),
-					array('new dir', false, __('Create New Directory'), null),
-					array('upload', false, __('Upload Files'), null)
-				)
-			);
-			$apply->setAttribute('class', 'apply create button');
-			$top_actions = Widget::Form('#', 'get');
-			$top_actions->setAttribute('id', 'top-actions');
-			$top_actions->appendChild($apply);*/
-			$top_actions = new XMLElement('button', __('Show Upload Queue'), array('type' => 'button', 'name' => 'show.upload_queue'));
-			$this->appendSubheading(__($subheading), $top_actions);
-			if($breadcrumbs) $this->insertBreadcrumbs($breadcrumbs);
-			
-			/*
-			 * Button to show/hide upload queue.
-			 */
-			//$this->Form->appendChild(new XMLElement('button', __('Show Upload Queue'), array('type' => 'button', 'name' => 'show.upload_queue')));
 
+			$this->appendSubheading(__($subheading));
+			$this->insertAction(
+				new XMLElement('button', __('Show Create/Upload'), array('type' => 'button', 'name' => 'show.create_upload'))
+			);
+			$this->insertAction(
+				Widget::Anchor(__('Create New File'), $page_url_f, __('Create a new text file'), 'create button')
+			);
+			if($breadcrumbs) $this->insertBreadcrumbs($breadcrumbs);
+
+			$create_upload = new XMLElement('div', NULL, array('id' => 'create-upload'));
+			$fieldset = new XMLElement('fieldset', NULL, array('class' => 'create-dirs'));
+			$fieldset->appendChild(new XMLElement('legend', __('Create Directories'), array()));
+			$div = new XMLElement('div');
+			$div->appendChild(new XMLElement('label', __('Enter directory names on separate lines')));
+			$div->appendChild(
+				new XMLElement('textarea', null, array('name' => 'directory_names'))
+			);
+			$div->appendChild(
+				new XMLElement('button', __('Create'), array('type' => 'button', 'name' => 'create.directories', 'disabled' => 'disabled'))
+			);
+			$div->appendChild(
+				new XMLElement('button', __('Clear'), array('type' => 'button', 'name' => 'clear.directories', 'disabled' => 'disabled'))
+			);
+			$fieldset->appendChild($div);
+			$create_upload->appendChild($fieldset);
+			
 			/*
 			 * File uploads fieldset.
 			 */
-			$fieldset = new XMLElement('fieldset', NULL, array('id' => 'upload-queue', 'class' => 'table'));
-			$div = WidgetExtra::SectionHead(__('Upload Queue'));
-			$fieldset->appendChild($div);
-			/*$button = new XMLElement('button', __('Create New Directory'), array('type' => 'button', 'name' => 'create_new.directories'));
-			$div->appendChild(WidgetExtra::UList(array($button)));
-			$fieldset->appendChild($div);			
-/*			$fieldset->appendChild(new XMLElement('legend',__('Upload Queue')));
-			$side = new XMLElement('div', NULL, array('class' => 'side'));
-			$side->appendChild(
-				new XMLElement('button', __('Add Files'), array('type' => 'button', 'name' => 'add_files.upload_queue'))
-			);
-			$shim = new XMLElement('div');
-			$shim->appendChild(
-				Widget::Input('add-files-true-button', '', 'file', array('multiple' => 'multiple'))
-			);
-			$side->appendChild($shim);
-			$fieldset->appendChild($side);
-*/			
-			//$div = new XMLElement('div', NULL, array('id' => 'upload-queue', 'class' => 'hidden'));
+			$fieldset = new XMLElement('fieldset', NULL, array('class' => 'table upload-queue'));
+			$fieldset->appendChild(new XMLElement('legend', __('Upload Files')));
 			$fieldset->appendChild(
 				Widget::Table(
 					Widget::TableHead(
@@ -128,15 +113,14 @@
 					new XMLElement(
 						'tbody',
 						NULL,
-						array('data-tmpl' => 'tmpl-upload-queue', 'data-data' => 'uploads')
+						array('data-tmpl' => 'tmpl-uploads', 'data-data' => 'uploads')
 					),
 					'selectable'
 				)
 			);
 			$buttons = new XMLElement('div', NULL, array('class' => 'upload-queue-buttons'));
-			//$add_files_div = new XMLElement('div', NULL, array('class' => 'relative'));
 			$buttons->appendChild(
-				new XMLElement('button', __('Add Files'), array('type' => 'button', 'name' => 'add_files.upload_queue'))
+				new XMLElement('button', __('Add Files'), array('type' => 'button', 'name' => 'add_files.uploads'))
 			);
 			$shim = new XMLElement('div', NULL, array('id' => 'aftb'));
 			$shim->appendChild(
@@ -145,37 +129,21 @@
 			$buttons->appendChild($shim);
 
 			$buttons->appendChild(
-				new XMLElement('button', __('Upload'), array('type' => 'button', 'name' => 'upload.upload_queue', 'disabled' => 'disabled'))
+				new XMLElement('button', __('Upload'), array('type' => 'button', 'name' => 'upload.uploads', 'disabled' => 'disabled'))
 			);
 			$buttons->appendChild(
-				new XMLElement('button', __('Cancel'), array('type' => 'button', 'name' => 'cancel.upload_queue'))
+				new XMLElement('button', __('Cancel'), array('type' => 'button', 'name' => 'cancel.uploads', 'disabled' => 'disabled'))
 			);
 			//$div->appendChild($buttons);
 			$fieldset->appendChild($buttons);
-			$this->Form->appendChild($fieldset);
-			//$this->Contents->prependChild($fieldset);
+			$create_upload->appendChild($fieldset);
+			$this->Form->appendChild($create_upload);
 
 			/*
 			 * Directories fieldset.
 			 */
 			$fieldset = new XMLElement('fieldset', NULL, array('class' => 'table'));
-			$div = WidgetExtra::SectionHead(__('Directories'));
-			$button = new XMLElement('button', __('Create New'), array('type' => 'button', 'name' => 'create_new.directories'));
-			$div->appendChild(WidgetExtra::UList(array($button)));
-			$fieldset->appendChild($div);			
-			
-			$div = new XMLElement('div', NULL, array('class' => 'new-directories hidden'));
-			$div->appendChild(new XMLElement('label', __('Enter directory names on separate lines')));
-			$div->appendChild(
-				new XMLElement('textarea', null, array('name' => 'directory_names'))
-			);
-			$div->appendChild(
-				new XMLElement('button', __('Create'), array('type' => 'button', 'name' => 'create.directories'))
-			);
-			$div->appendChild(
-				new XMLElement('button', __('Cancel'), array('type' => 'button', 'name' => 'cancel.directories'))
-			);
-			$fieldset->appendChild($div);
+			$fieldset->appendChild(new XMLElement('legend', __('Directories')));
 			$fieldset->appendChild(
 				Widget::Table(
 					Widget::TableHead(
@@ -198,11 +166,9 @@
 			 * Files fieldset.
 			 */
 			$fieldset = new XMLElement('fieldset', NULL, array('class' => 'table'));
-			///$fieldset->setAttribute('class', 'table');
-			$div = WidgetExtra::SectionHead(__('Files'));
-			$button = new XMLElement('button', __('Create New'), array('type' => 'button', 'name' => 'create_new.files', 'data-url' => $page_url_f));
-			$div->appendChild(WidgetExtra::UList(array($button)));
-			$fieldset->appendChild($div);
+			$fieldset->appendChild(
+				new XMLElement('legend', __('Files'))
+			);
 			
 			$fieldset->appendChild(
 				Widget::Table(
@@ -265,7 +231,7 @@
 				new XMLElement(
 					'script',
 					__(PHP_EOL . ob_get_contents() . PHP_EOL),
-					array('id' => 'tmpl-upload-queue', 'type' => 'text/x-jquery-tmpl')
+					array('id' => 'tmpl-uploads', 'type' => 'text/x-jquery-tmpl')
 				)
 			);
 			ob_end_clean();
@@ -381,6 +347,9 @@
 			$this->Form->appendChild($div);
 
 			$this->Form->appendChild(new XMLElement('div', NULL, array('class' => 'actions')));
+
+			$text = new XMLElement('p', __('Saving'));
+			$this->Form->appendChild(new XMLElement('div', $text, array('id' => 'saving-popup')));
 			//$this->_context = array('edit', 'pages', 'single');
 
 			/**

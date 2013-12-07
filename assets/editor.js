@@ -76,12 +76,11 @@
 
 				// Allow tab insertion
 				if(key == 9 && in_workspace) {
+					event.preventDefault();
+
 					var start = text_area.selectionStart,
 						end = text_area.selectionEnd,
 						position = text_area.scrollTop;
-
-					event.preventDefault();
-
 					// Add tab
 					text_area.value = text_area.value.substring(0, start) + "\t" + text_area.value.substring(end, text_area.value.length);
 					text_area.selectionStart = start + 1;
@@ -90,15 +89,19 @@
 					// Restore scroll position
 					text_area.scrollTop = position;
 				}
+				else if(event.metaKey || event.ctrlKey && key == 83) {
+					event.preventDefault();
+					$('input[name="action[save]"]').trigger('click');
+				}
 			});
-/*				if(([8, 9, 13, 32].indexOf(key) != -1) || (key >= 48 && key <= 90) || (key >= 163 && key <= 222)){
-					//if(!$(body).hasClass('unsaved-changes')) $(body).addClass('unsaved-changes');
-					/*if(!document_modified) {
-						document_modified = true;
-						breadcrumbs_filename.html(breadcrumbs_filename.html() + ' <small>↑</small>');
-					}*/
+/*			if(([8, 9, 13, 32].indexOf(key) != -1) || (key >= 48 && key <= 90) || (key >= 163 && key <= 222)){
+				//if(!$(body).hasClass('unsaved-changes')) $(body).addClass('unsaved-changes');
+				/*if(!document_modified) {
+					document_modified = true;
+					breadcrumbs_filename.html(breadcrumbs_filename.html() + ' <small>↑</small>');
+				}*/
 
-		$('#contents form div.actions').click(function(event){
+		$('#contents div.actions').click(function(event){
 			switch(event.target.name){
 				case 'action[save]':
 					form_action = "save";
@@ -114,15 +117,18 @@
 			event.preventDefault();
 			switch(form_action){
 				case 'save':
+					$('#saving-popup').show();
 					$.ajax({
 						'type': 'POST',
 						'url': page_url,
 						'data': $(self).serialize() + '&action=save&ajax=1',
 						'dataType': 'json',
 						'error': function(xhr, msg, error){
+							$('#saving-popup').hide();
 							alert(error);
 						},
 						'success': function(data){
+							$('#saving-popup').hide();
 							$('#context h2').html(data.filename);
 							page_url = editor_url + data.filename_encoded + '/';
 							history.replaceState({'a': 'b'}, '', page_url);
@@ -134,8 +140,6 @@
 								$tmpl_actions.tmpl({'new_file': false}).appendTo($div_actions);
 							}
 							$(notifier).trigger('attach.notify', [data.alert_msg, data.alert_type]);
-							setHighlighting();
-							textToEditor();
 						}
 					});
 					break;

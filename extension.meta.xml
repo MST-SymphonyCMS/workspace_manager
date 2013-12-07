@@ -14,6 +14,10 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="0.3.0" date="2013-12-07" min="2.3">
+			- Directories/files page partially reorganized.
+			- Ability to save files using Ctrl + s added.
+		</release>
 		<release version="0.2.0" date="2013-11-25" min="2.3">
 			- Improved design/appearance of page showing directories and files.
 		</release>
