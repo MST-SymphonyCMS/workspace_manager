@@ -6,7 +6,7 @@
 		
 	var body,
 		notifier,
-		breadcrumbs_filename,
+		$breadcrumbs_filename,
 		contents,
 		actions;
 
@@ -24,7 +24,8 @@
 	var page_url,
 		workspace_url,
 		editor_url;
-	var $name_field;
+	var $name_field,
+		filename;
 	var form_action;
 
 	var text_area;
@@ -41,7 +42,7 @@
 	$().ready(function() {
 		if(window.getSelection() == undefined) return;
 		body = $('body');
-		breadcrumbs_filename = $('#breadcrumbs h2');
+		$breadcrumbs_filename = $('#breadcrumbs h2');
 		notifier = $('#header div.notifier');
 		contents = $('#contents');
 		actions = $('#contents div.actions');
@@ -54,7 +55,7 @@
 		page_url = $('#contents form').attr('action');
 		workspace_url = $('#contents form').attr('data-workspace-url');
 		editor_url = $('#contents form').attr('data-editor-url');
-		$name_field = $(contents).find('input[name="fields[name]"]');
+		$name_field = $(contents).find('input[name="fields[name]"]:first');
 		new_file = ($name_field.val() == '');
 
 		$.getJSON(
@@ -117,6 +118,8 @@
 			event.preventDefault();
 			switch(form_action){
 				case 'save':
+					filename = $('#contents input[name="fields[name]"]:first').val();
+					if(!filename) return;
 					$('#saving-popup').show();
 					$.ajax({
 						'type': 'POST',
@@ -129,7 +132,7 @@
 						},
 						'success': function(data){
 							$('#saving-popup').hide();
-							$('#context h2').html(data.filename);
+							$breadcrumbs_filename.text(filename);
 							page_url = editor_url + data.filename_encoded + '/';
 							history.replaceState({'a': 'b'}, '', page_url);
 							$list_files.empty();
