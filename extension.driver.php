@@ -9,22 +9,12 @@
 					'page' => '/backend/',
 					'delegate' => 'AdminPagePostCallback',
 					'callback' => 'postCallback'
-				),
+				)/*,
 				array(
 					'page' => '/backend/',
 					'delegate' => 'ExtensionsAddToNavigation',
 					'callback' => 'addToNavigation'
-				),
-				array(
-					'page' => '/backend/',
-					'delegate' => 'AdminPagePreGenerate',
-					'callback' => 'doink'
-				),
-				array(
-					'page' => '/backend/',
-					'delegate' => 'AdminPagePostGenerate',
-					'callback' => 'insertView'
-				)
+				)*/
 			);
 		}
 
@@ -56,10 +46,18 @@
 			}
 		}
 
-		public function addToNavigation(&$context){
+		/*
+		* Set naviagtion
+		*/
+		public function fetchNavigation(){
+			return array($this->navigation());
+		}
+
+		private function navigation(){
 			$children = array(
 				array(
-					'link' => '/workspace/',
+					'relative' => false,
+					'link' => 'workspace',
 					'name' => 'Home',
 					'visible' => 'yes'
 				)
@@ -77,13 +75,20 @@
 					);
 				}
 			}
-			$context['navigation'][250] = array(
+			return array(
 				'name' => 'Workspace',
 				'type' => 'structure',
 				'index' => '250',
 				'children' => $children
 			);
 		}
+
+		/*
+		* Set navigation using delegate
+		*/
+		//public function addToNavigation(&$context){
+		//	$context['navigation'][250] = $this->navigation();
+		//}
 
 	}
 ?>

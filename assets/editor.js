@@ -26,7 +26,7 @@
 		editor_url;
 	var $name_field,
 		filename;
-	var form_action;
+	var form_action = "save";
 
 	var text_area;
 		

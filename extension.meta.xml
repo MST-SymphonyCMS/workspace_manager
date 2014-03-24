@@ -14,6 +14,9 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="0.3.2" date="2013-03-24" min="2.3">
+			- Make navigation work with Sympnony 2.4 beta
+		</release>
 		<release version="0.3.1" date="2013-12-24" min="2.3">
 			- New filename appears in breadcrumbs when file is saved (like is should have before).
 		</release>
